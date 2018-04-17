@@ -9,9 +9,10 @@ package ru.job4j;
 
 public class Calculate{
 	
-	/** main - точка входа в программу(точка запуска)
-	 *  выводит строку в консоль
-	 * @params arg - в arg будут переданы аргументы из командой строки  
+	/** 
+	 * main - точка входа в программу(точка запуска)
+	 * выводит строку в консоль
+	 * @param arg - в arg будут переданы аргументы из командой строки  
 	 */
 	public static void main(String[] args){
 		System.out.println("Hello, World!");
