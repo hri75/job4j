@@ -34,6 +34,11 @@ public class Calculator {
         this.result = first * second;
     }
 
+    /**
+     * Метод для деления.
+     * @param first
+     * @param second
+     */
     public void div(double first, double second) {
         this.result = first / second;
     }
