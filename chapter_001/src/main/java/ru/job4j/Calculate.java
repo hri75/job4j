@@ -8,8 +8,8 @@ package ru.job4j;
  */
 
 public class Calculate {
-	
-	/** 
+
+	/**
 	 * main - точка входа в программу(точка запуска)
 	 * выводит строку в консоль
 	 * @param args - в arg будут переданы аргументы из командой строки  
@@ -17,13 +17,13 @@ public class Calculate {
 	public static void main(String[] args) {
 		System.out.println("Hello, World!");
 	}
-	
+
 	/**
 	 * Method echo
 	 * @param name - Ваше имя
 	 * @return "Echo, echo, echo " + name
 	 */
-	 public String echo(String name) {
-		 return "Echo, echo, echo " + name;
-	 }
+	public String echo(String name) {
+		return "Echo, echo, echo " + name;
+	}
 }
