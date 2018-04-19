@@ -11,20 +11,37 @@ import java.util.StringJoiner;
 public class PaintTest {
 
     /**
-     * Test метода pyramid.
+     * Test метода pyramid для высоты = 2.
      */
     @Test
-    public void whenPyramid4Right() {
+    public void whenPyramid2() {
         Paint paint = new Paint();
-        String rst = paint.pyramid(4);
+        String rst = paint.pyramid(2);
         System.out.println(rst);
         assertThat(rst,
                 is(
                         new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
-                                .add("   ^   ")
-                                .add("  ^^^  ")
-                                .add(" ^^^^^ ")
-                                .add("^^^^^^^")
+                                .add(" ^ ")
+                                .add("^^^")
+                                .toString()
+                )
+        );
+    }
+
+    /**
+     * Test метода pyramid для высоты = 3.
+     */
+    @Test
+    public void whenPyramid3() {
+        Paint paint = new Paint();
+        String rst = paint.pyramid(3);
+        System.out.println(rst);
+        assertThat(rst,
+                is(
+                        new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
+                                .add("  ^  ")
+                                .add(" ^^^ ")
+                                .add("^^^^^")
                                 .toString()
                 )
         );
