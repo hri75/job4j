@@ -66,10 +66,14 @@ public class Triangle {
      */
     private boolean exist(double ab, double ac, double bc) {
         //Треугольник существует тогда, когда сумма двух его любых сторон больше третьей стороны.
-        boolean conditionBC = (ab + ac) > bc;
-        boolean conditionAC = (ab + bc) > ac;
-        boolean conditionAB = (ac + bc) > ab;
 
-        return conditionAB && conditionAC && conditionBC;
+        //замечание: в методе exist не нужно создавать переменных. верните сразу результат
+        //boolean conditionBC = (ab + ac) > bc;
+        //boolean conditionAC = (ab + bc) > ac;
+        //boolean conditionAB = (ac + bc) > ab;
+        //return conditionAB && conditionAC && conditionBC;
+
+        //возвращаю сразу результат:
+        return ((ab + ac) > bc) && ((ab + bc) > ac) && ((ac + bc) > ab);
     }
 }
