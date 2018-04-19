@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
 
 public class MaxTest {
     /**
-     * Test max
+     * Test max для двух аргументов.
      */
     @Test
     public void whenFirstLessSecond() {
@@ -18,4 +18,15 @@ public class MaxTest {
         int result = maxim.max(1, 2);
         assertThat(result, is(2));
     }
+
+    /**
+     * Test max для трех аргументов.
+     */
+    @Test
+    public void when1And2And3Then3() {
+        Max maxim = new Max();
+        int result = maxim.max(1, 2, 3);
+        assertThat(result, is(3));
+    }
+
 }

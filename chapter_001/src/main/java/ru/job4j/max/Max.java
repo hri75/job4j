@@ -14,4 +14,18 @@ public class Max {
     public int max(int first, int second) {
         return first > second ? first : second;
     }
+
+    /**
+     * Метод max возвращает максимальное из трех целых чисел.
+     * @param first - первое целое число.
+     * @param second - второе целое число.
+     * @param third  - третье целое число.
+     * @return - максимальное из трех целых чисел.
+     */
+    public int max(int first, int second, int third) {
+        int temp = this.max(first, second);
+        temp = this.max(temp, third);
+        return temp;
+    }
+
 }
