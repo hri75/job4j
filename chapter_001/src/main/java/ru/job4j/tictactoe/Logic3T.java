@@ -6,6 +6,7 @@ package ru.job4j.tictactoe;
 public class Logic3T {
 
     private final Figure3T[][] table;
+    private static final int START = 1;
 
     /**
      * Конструктор экземпляра класса Logic3T
@@ -20,7 +21,7 @@ public class Logic3T {
      * @return - Истина - победили крестики.
      */
     public boolean isWinnerX() {
-        return isWinner(true);
+        return isWinnerRecursion(true);
     }
 
     /**
@@ -28,7 +29,7 @@ public class Logic3T {
      * @return - Истина - победили нолики.
      */
     public boolean isWinnerO() {
-        return isWinner(false);
+        return isWinnerRecursion(false);
     }
 
     /**
@@ -37,10 +38,9 @@ public class Logic3T {
      */
     public boolean hasGap() {
         boolean result = false;
-        //а если массив неровный?
-        for (int i = 0; i < table.length; i++) {
-            for (int j = 0; j < table[i].length; j++) {
-                if (!table[i][j].hasMarkX() && !table[i][j].hasMarkO()) {
+        for (int i = 0; i < this.table.length; i++) {
+            for (int j = 0; j < this.table.length; j++) {
+                if (!this.table[i][j].hasMarkX() && !this.table[i][j].hasMarkO()) {
                     result = true;
                     break;
                 }
@@ -50,57 +50,48 @@ public class Logic3T {
     }
 
     /**
-     * Метод isWinner проверяет, есть ли победитель по заданной пометке.
+     * Метод isWinnerRecursion проверяет, есть ли победитель по заданной пометке.
      * @param checkMarkX  - если Истина - то проверить пометку крестик, иначе - проверить пометку нолик.
      * @return - возвращает Истину, если есть победитель по заданной пометке.
      */
-    private boolean isWinner(boolean checkMarkX) {
-        boolean isWin = false; //есть ли победитель
-
-        //проверим по строкам - нет ли строки с заполненными крестиками
-        for (int i = 0; i < table.length && !isWin; i++) {
-            isWin = true;
-            for (int j = 0; j < table.length; j++) {
-                if (!hasMark(table[i][j], checkMarkX)) {
-                    isWin = false;
+    private boolean isWinnerRecursion(boolean checkMarkX) {
+        boolean isWin = false;
+        for (int i = 0; i < this.table.length && !isWin; i++) {
+            for (int j = 0; j < this.table.length; j++) {
+                if (this.traversal(i, j, START, 0, 1, checkMarkX) || this.traversal(i, j, START, 1, 0, checkMarkX) || this.traversal(i, j, START, 1, 1, checkMarkX) || this.traversal(i, j, START, -1, 1, checkMarkX)) {
+                    isWin = true;
                     break;
                 }
             }
         }
-        //проверим по столбцам - нет ли столбца с заполненными крестиками
-        if (!isWin) {
-            for (int i = 0; i < table.length && !isWin; i++) {
-                isWin = true;
-                for (int j = 0; j < table.length; j++) {
-                    if (!hasMark(table[j][i], checkMarkX)) {
-                        isWin = false;
-                        break;
-                    }
-                }
-            }
-        }
-        //проверим по 1-й диагонали:
-        if (!isWin) {
-            isWin = true;
-            for (int i = 0; i < table.length; i++) {
-                if (!hasMark(table[i][i], checkMarkX)) {
-                    isWin = false;
-                    break;
-                }
-            }
-        }
-        //проверим по 2-й диагонали:
-        if (!isWin) {
-            isWin = true;
-            for (int i = 0; i < table.length; i++) {
-                if (!hasMark(table[table.length - i - 1][i], checkMarkX)) {
-                    isWin = false;
-                    break;
-                }
-            }
-        }
-
         return isWin;
+    }
+
+    /**
+     * Метод рекурсивного поиска совпадающих пометок в заданном направлении.
+     * @param x - текущий индекс строки проверяемой ячейки массива.
+     * @param y - текущий индекс столбца проверяемой ячейки массива.
+     * @param count - шаг рекурсии ( когда count == длине таблицы, тогда есть победитель)
+     * @param stepX - направление движения по X.
+     * @param stepY - направление движения по Y.
+     * @param checkMarkX - Истина = проверка крестиков, Ложь = проверка ноликов.
+     * @return - возвращает Истину, если все ячейки строки(или столбца, или диагонали) имеют заданную пометку.
+     */
+    private boolean traversal(int x, int y, int count, int stepX, int stepY, boolean checkMarkX) {
+        boolean result = false;
+        if (count == this.table.length) {
+            result = true;
+        } else {
+            if (x + stepX >= 0
+                && y + stepY >= 0
+                && x + stepX < this.table.length
+                && y + stepY < this.table.length
+                && hasMark(table[x][y], checkMarkX)
+                && hasMark(table[x + stepX][y + stepY], checkMarkX)) {
+                result = this.traversal(x + stepX, y + stepY, count + 1, stepX, stepY, checkMarkX);
+            }
+        }
+        return result;
     }
 
     /**

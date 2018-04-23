@@ -64,7 +64,7 @@ public class TicTacToe extends Application {
 
     /**
      * Метод проверяет, есть ли победитель.
-     * @return
+     * @return - Истина - есть победитель.
      */
     private boolean checkWinner() {
         boolean result = false;
