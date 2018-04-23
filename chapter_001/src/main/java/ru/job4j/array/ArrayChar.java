@@ -1,5 +1,4 @@
 package ru.job4j.array;
-
 /**
  * Обертка над строкой.
  */
@@ -14,16 +13,16 @@ public class ArrayChar {
      * Проверяет. что слово начинается с префикса.
      *
      * @param prefix префикс.
-     * @return если слово начинаеться с префикса
+     * @return возвращает Истина, если слово начинается с префикса.
+     *
+     * Комментарий: Если префикс длиннее, чем исходная строка, возвращает Ложь.
      */
     public boolean startWith(String prefix) {
         boolean result = true;
         char[] value = prefix.toCharArray();
-
         if (value.length > data.length) {
-            result = false; //если префикс длиннее, чем исходная строка.
+            result = false;
         } else {
-            // проверить. что массив data имеет первые элементы одинаковые с value
             for (int i = 0; i < value.length; i++) {
                 if (value[i] != data[i]) {
                     result = false;
