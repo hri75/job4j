@@ -1,0 +1,5 @@
+package ru.job4j.tracker;
+
+public class Patient {
+    public String name;
+}
