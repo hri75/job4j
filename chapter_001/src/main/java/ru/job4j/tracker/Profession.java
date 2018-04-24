@@ -1,5 +1,8 @@
 package ru.job4j.tracker;
 
+/**
+ * Класс профессия.
+ */
 public class Profession {
 
     public String name;
