@@ -90,7 +90,7 @@ public class StartUI {
      * Показывает пункты меню на экране.
      */
     private void showMenu() {
-        System.out.println("Меню: ");
+        System.out.println("Меню:");
         System.out.println("0. Add new Item");
         System.out.println("1. Show all items");
         System.out.println("2. Edit item");
@@ -120,7 +120,7 @@ public class StartUI {
         if (items == null) {
             System.out.println("------------ Нет ни одной заявки: --------------");
         } else {
-            System.out.println("------------ Все заявки : --------------");
+            System.out.println("------------ Все заявки: --------------");
             for (int i = 0; i < items.length; i++) {
                 StringBuilder temp = new StringBuilder();
                 temp.append(i + 1).append(". ").append(this.getItemInfo(items[i]));
