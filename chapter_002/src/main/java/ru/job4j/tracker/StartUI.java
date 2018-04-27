@@ -38,7 +38,7 @@ public class StartUI {
     /**
      * 6. Exit Program - выйти из программы.
      */
-    private static final String EXIT = "6";
+    private static final int EXIT = 6;
 
     /**
      * Получение данных от пользователя.
@@ -64,24 +64,16 @@ public class StartUI {
      * Основной цикл программы.
      */
     public void init() {
-        boolean exit = false;
-        while (!exit) {
-            this.showMenu();
-            String answer = this.input.ask("Введите пункт меню: ");
-            if (ADD.equals(answer)) {
-                this.createItem();
-            } else if (SHOW.equals(answer)) {
-                this.showItems();
-            } else if (EDIT.equals(answer)) {
-                this.editItem();
-            } else if (DELETE.equals(answer)) {
-                this.deleteItem();
-            } else if (ID.equals(answer)) {
-                this.showItemById();
-            } else if (NAME.equals(answer)) {
-                this.showItemsByName();
-            } else if (EXIT.equals(answer)) {
-                exit = true;
+        MenuTracker menu = new MenuTracker(this.input, this.tracker);
+        while (true) {
+            menu.show();
+            try {
+                int key = Integer.parseInt(this.input.ask("Введите пункт меню: "));
+                if (key == EXIT) {
+                    break;
+                }
+                menu.select(key);
+            } catch (NumberFormatException ex) {
             }
         }
     }

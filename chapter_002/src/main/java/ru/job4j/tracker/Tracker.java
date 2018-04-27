@@ -129,4 +129,14 @@ public class Tracker {
     private String generateId() {
         return String.valueOf(System.currentTimeMillis() + RN.nextInt());
     }
+
+    /**
+     * Получает информацию по заявке:  ИмяЗаявки, ОписаниеЗаявки, id = ИдентификаторЗаявки.
+     * @param item - заявка.
+     * @return - строка с ирнформацией по заявке.
+     */
+    public String getItemInfo(Item item) {
+        return new StringBuilder().append(item.getName()).append(", ").append(item.getDesc()).append(", id = ").append(item.getId()).toString();
+    }
+
 }
