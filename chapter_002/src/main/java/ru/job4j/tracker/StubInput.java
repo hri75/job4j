@@ -22,6 +22,11 @@ public class StubInput implements Input {
      */
     private int position;
 
+
+    /**
+     * Конструктор
+     * @param value - строка с "управляющим" воздействием
+     */
     public StubInput(final String[] value) {
         this.value = value;
     }
@@ -37,5 +42,10 @@ public class StubInput implements Input {
     @Override
     public String ask(String question) {
         return this.value[this.position++];
+    }
+
+    @Override
+    public int ask(String question, int[] range) {
+        throw new UnsupportedOperationException("Не поддерживаемая операция.");
     }
 }

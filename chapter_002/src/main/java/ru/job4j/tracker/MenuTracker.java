@@ -260,4 +260,11 @@ public class MenuTracker {
         }
     }
 
+    public int[] getRange() {
+        int[] range = new int[actions.length];
+        for (int i = 0; i < actions.length; i++) {
+            range[i] = i;
+        }
+        return range;
+    }
 }
