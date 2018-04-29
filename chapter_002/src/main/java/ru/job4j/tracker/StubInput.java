@@ -46,6 +46,19 @@ public class StubInput implements Input {
 
     @Override
     public int ask(String question, int[] range) {
-        throw new UnsupportedOperationException("Не поддерживаемая операция.");
+        //throw new UnsupportedOperationException("Не поддерживаемая операция.");
+        int key = Integer.parseInt(this.ask(question));
+        boolean exist = false;
+        for (int value: range) {
+            if (key == value) {
+                exist = true;
+                break;
+            }
+        }
+        if (exist) {
+            return key;
+        } else {
+            throw new MenuOutException("Неправильный пункт меню.");
+        }
     }
 }
