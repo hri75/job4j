@@ -3,13 +3,22 @@ package ru.job4j.tracker;
 /**
  * Внешний класс - найти заявку по id.
  */
-class ShowItemById implements UserAction {
+class ShowItemById extends BaseAction {
 
-    @Override
-    public int key() {
-        return 4;
+    /**
+     * Конструктор вспомогательного класса ShowItemById.
+     * @param key - номер пункта меню.
+     * @param name - наименование пункта меню.
+     */
+    public ShowItemById(int key, String name) {
+        super(key, name);
     }
 
+    /**
+     * Показать заявку, найденную по id.
+     * @param input - входная информация.
+     * @param tracker - хранилище заявок.
+     */
     @Override
     public void execute(Input input, Tracker tracker) {
         String id = input.ask("Введите id заявки для поиска:");
@@ -21,11 +30,6 @@ class ShowItemById implements UserAction {
             System.out.println(tracker.getItemInfo(item));
         }
         System.out.println();
-    }
-
-    @Override
-    public String info() {
-        return String.format("%s. %s", this.key(), "Find item by Id");
     }
 }
 
@@ -55,13 +59,13 @@ public class MenuTracker {
      * Заполнить массив действий. Статический внутренний класс. для пункта 5.
      */
     public void fillActions() {
-        this.actions[0] = this.new AddItem();
-        this.actions[1] = this.new ShowItems();
-        this.actions[2] = this.new EditItem();
-        this.actions[3] = this.new DeleteItem();
-        this.actions[4] = new ShowItemById();
-        this.actions[5] = new MenuTracker.ShowItemByName();
-        this.actions[6] = this.new ExitProgram();
+        this.actions[0] = this.new AddItem(0, "Add new Item");
+        this.actions[1] = this.new ShowItems(1, "Show all items");
+        this.actions[2] = this.new EditItem(2, "Edit item");
+        this.actions[3] = this.new DeleteItem(3, "Delete item");
+        this.actions[4] = new ShowItemById(4, "Find item by Id");
+        this.actions[5] = new MenuTracker.ShowItemByName(5, "Find items by name");
+        this.actions[6] = this.new ExitProgram(6, "Exit Program");
     }
 
     /**
@@ -78,7 +82,7 @@ public class MenuTracker {
 
     /**
      * Выбор действия.
-     * @param key
+     * @param key - номер пункта меню.
      */
     public void select(int key) {
         this.actions[key].execute(this.input, this.tracker);
@@ -87,11 +91,10 @@ public class MenuTracker {
     /**
      * Внутренний класс - реализует добавление заявки.
      */
-    private class AddItem implements UserAction {
+    private class AddItem extends BaseAction {
 
-        @Override
-        public int key() {
-            return 0;
+        public AddItem(int key, String name) {
+            super(key, name);
         }
 
         @Override
@@ -103,23 +106,15 @@ public class MenuTracker {
             tracker.add(item);
             System.out.println("------------ Создана новая заявка с getId : " + item.getId() + "-----------");
         }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Add new Item");
-        }
     }
 
     /**
      * Внутренний класс - редактирование заявки.
      */
-    private class EditItem implements UserAction {
-
-        @Override
-        public int key() {
-            return 2;
+    private class EditItem extends BaseAction {
+        public EditItem(int key, String name) {
+            super(key, name);
         }
-
         @Override
         public void execute(Input input, Tracker tracker) {
             String id = input.ask("Введите id заявки для редактирования:");
@@ -138,22 +133,15 @@ public class MenuTracker {
             }
             System.out.println();
         }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Edit item");
-        }
-
     }
 
     /**
      * Внутренний класс - удаление заявки.
      */
-    private class DeleteItem implements UserAction {
+    private class DeleteItem extends BaseAction {
 
-        @Override
-        public int key() {
-            return 3;
+        public DeleteItem(int key, String name) {
+            super(key, name);
         }
 
         @Override
@@ -169,21 +157,15 @@ public class MenuTracker {
             }
             System.out.println();
         }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Delete item");
-        }
     }
 
     /**
      * Внутренний класс - показать все заявки.
      */
-    private class ShowItems implements UserAction {
+    private class ShowItems extends BaseAction {
 
-        @Override
-        public int key() {
-            return 1;
+        public ShowItems(int key, String name) {
+            super(key, name);
         }
 
         @Override
@@ -201,21 +183,15 @@ public class MenuTracker {
             }
             System.out.println();
         }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Show all items");
-        }
     }
 
     /**
      * Статический внутренний класс - найти заявку по имени. (вложенный).
      */
-    private static class ShowItemByName implements UserAction {
+    private static class ShowItemByName extends BaseAction {
 
-        @Override
-        public int key() {
-            return 5;
+        public ShowItemByName(int key, String name) {
+            super(key, name);
         }
 
         @Override
@@ -232,31 +208,20 @@ public class MenuTracker {
             }
             System.out.println();
         }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Find items by name");
-        }
     }
 
     /**
      * Внутренний класс - "псевдо" - выход.
      */
-    private class ExitProgram implements UserAction {
+    private class ExitProgram extends BaseAction {
 
-        @Override
-        public int key() {
-            return 6;
+        public ExitProgram(int key, String name) {
+            super(key, name);
         }
 
         @Override
         public void execute(Input input, Tracker tracker) {
             System.out.println("Выход из программы.");
-        }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Exit Program");
         }
     }
 

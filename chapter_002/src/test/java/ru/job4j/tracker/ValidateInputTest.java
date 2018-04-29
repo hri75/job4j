@@ -30,13 +30,13 @@ public class ValidateInputTest {
     @Test
     public void whenInvalidInput() {
         ValidateInput input = new ValidateInput(
-                new StubInput(new String[] {"invalid", "1"})
+                new StubInput(new String[]{"invalid", "1"})
         );
-        input.ask("Enter", new int[] {1});
+        input.ask("Enter", new int[]{1});
         assertThat(
                 this.mem.toString(),
                 is(
-                        String.format("Введите правильный пункт меню!" + System.lineSeparator())
+                    String.format("Введите правильный пункт меню!" + System.lineSeparator())
                 )
         );
     }
