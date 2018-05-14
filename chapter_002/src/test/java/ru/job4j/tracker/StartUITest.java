@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -49,7 +50,7 @@ public class StartUITest {
         Tracker tracker = new Tracker();
         Input input = new StubInput(new String[]{"0", "test name", "desc", "6"});
         new StartUI(input, tracker).init();
-        assertThat(tracker.findAll()[0].getName(), is("test name"));
+        assertThat(tracker.findAll().get(0).getName(), is("test name"));
     }
 
     /**
@@ -73,8 +74,8 @@ public class StartUITest {
         Item item = tracker.add(new Item("proba", "desc1", 123L));
         Input input = new StubInput(new String[]{"3", item.getId(), "6"});
         new StartUI(input, tracker).init();
-        Item[] expected = null;
-        Item[] result = tracker.findAll();
+        ArrayList<Item> expected = new ArrayList<>();
+        ArrayList<Item> result = tracker.findAll();
         assertThat(expected, is(result));
     }
 
@@ -88,8 +89,8 @@ public class StartUITest {
         Item item2 = tracker.add(new Item("test2", "desc2", 123L));
         Input input = new StubInput(new String[]{"3", item1.getId(), "6"});
         new StartUI(input, tracker).init();
-        Item[] result = tracker.findAll();
-        assertThat(result[0].getName(), is("test2"));
+        ArrayList<Item> result = tracker.findAll();
+        assertThat(result.get(0).getName(), is("test2"));
     }
 
     /**

@@ -1,6 +1,9 @@
 package ru.job4j.tracker;
 
 import org.junit.Test;
+
+import java.util.ArrayList;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -16,7 +19,7 @@ public class TrackerTest {
         Tracker tracker = new Tracker();
         Item item = new Item("test1", "testDescription", 123L);
         Item result = tracker.add(item);
-        assertThat(tracker.findAll()[0], is(result));
+        assertThat(tracker.findAll().get(0), is(result));
     }
     /**
      * Тест метода findAll.
@@ -73,11 +76,11 @@ public class TrackerTest {
     @Test
     public void whenDeletedFirstItem() {
         Tracker tracker = new Tracker();
-        Item[] expected = tracker.findAll();
+        ArrayList<Item> expected = tracker.findAll();
         Item item1 = new Item("test1", "testDescription1", 123L);
         tracker.add(item1);
         tracker.delete(item1.getId());
-        Item[] result = tracker.findAll();
+        ArrayList<Item> result = tracker.findAll();
         assertThat(expected, is(result));
     }
 
@@ -92,12 +95,12 @@ public class TrackerTest {
         Item item3 = new Item("test3", "testDescription3", 124L);
         tracker.add(item1);
         tracker.add(item3);
-        Item[] expected = tracker.findAll();
+        ArrayList<Item> expected = tracker.findAll();
         tracker.delete(item3.getId());
         tracker.add(item2);
         tracker.add(item3);
         tracker.delete(item2.getId());
-        Item[] result = tracker.findAll();
+        ArrayList<Item> result = tracker.findAll();
         assertThat(expected, is(result));
     }
 
@@ -123,12 +126,12 @@ public class TrackerTest {
         Tracker tracker = new Tracker();
         Item item1 = new Item("test1", "testDescription1", 123L);
         tracker.add(item1);
-        Item[] expected = tracker.findAll();
+        ArrayList<Item> expected = tracker.findAll();
         Item item2 = new Item("test2", "testDescription2", 124L);
         tracker.add(item2);
         Item item3 = new Item("test3", "testDescription3", 124L);
         tracker.add(item3);
-        Item[] result = tracker.findByName("test1");
+        ArrayList<Item> result = tracker.findByName("test1");
         assertThat(expected, is(result));
     }
 
@@ -137,7 +140,7 @@ public class TrackerTest {
      */
     @Test
     public void whenNotFoundByName() {
-        Item[] expected = null;
+        ArrayList<Item> expected = new ArrayList<>();
         Tracker tracker = new Tracker();
         Item item1 = new Item("test1", "testDescription1", 123L);
         tracker.add(item1);
@@ -145,7 +148,7 @@ public class TrackerTest {
         tracker.add(item2);
         Item item3 = new Item("test3", "testDescription3", 124L);
         tracker.add(item3);
-        Item[] result = tracker.findByName("абракадабра");
+        ArrayList<Item> result = tracker.findByName("абракадабра");
         assertThat(expected, is(result));
     }
 
@@ -154,7 +157,7 @@ public class TrackerTest {
      */
     @Test
     public void whenKeyIsNullThenNotFoundByName() {
-        Item[] expected = null;
+        ArrayList<Item> expected = new ArrayList<>();
         Tracker tracker = new Tracker();
         Item item1 = new Item("test1", "testDescription1", 123L);
         tracker.add(item1);
@@ -162,7 +165,7 @@ public class TrackerTest {
         tracker.add(item2);
         Item item3 = new Item("test3", "testDescription3", 124L);
         tracker.add(item3);
-        Item[] result = tracker.findByName(null);
+        ArrayList<Item> result = tracker.findByName(null);
         assertThat(expected, is(result));
     }
 }

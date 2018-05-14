@@ -1,5 +1,7 @@
 package ru.job4j.tracker;
 
+import java.util.ArrayList;
+
 /**
  * Внешний класс - найти заявку по id.
  */
@@ -170,14 +172,14 @@ public class MenuTracker {
 
         @Override
         public void execute(Input input, Tracker tracker) {
-            Item[] items = tracker.findAll();
+            ArrayList<Item> items = tracker.findAll();
             if (items == null) {
                 System.out.println("------------ Нет ни одной заявки: --------------");
             } else {
                 System.out.println("------------ Все заявки: --------------");
-                for (int i = 0; i < items.length; i++) {
+                for (int i = 0; i < items.size(); i++) {
                     StringBuilder temp = new StringBuilder();
-                    temp.append(i + 1).append(". ").append(tracker.getItemInfo(items[i]));
+                    temp.append(i + 1).append(". ").append(tracker.getItemInfo(items.get(i)));
                     System.out.println(temp.toString());
                 }
             }
@@ -197,13 +199,14 @@ public class MenuTracker {
         @Override
         public void execute(Input input, Tracker tracker) {
             String name = input.ask("Введите имя заявки для поиска:");
-            Item[] items = tracker.findByName(name);
+            //Item[] items = tracker.findByName(name);
+            ArrayList<Item> items = tracker.findByName(name);
             if (items == null) {
                 System.out.println("Заявки не найдены.");
             } else {
                 System.out.println("------------ Найдены заявки: --------------");
-                for (int i = 0; i < items.length; i++) {
-                    System.out.println(tracker.getItemInfo(items[i]));
+                for (int i = 0; i < items.size(); i++) {
+                    System.out.println(tracker.getItemInfo(items.get(i)));
                 }
             }
             System.out.println();

@@ -1,5 +1,6 @@
 package ru.job4j.tracker;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -7,14 +8,9 @@ import java.util.Random;
  */
 public class Tracker {
     /**
-     * Массив для хранение заявок.
+     * Список для хранение заявок.
      */
-    private Item[] items = new Item[100];
-
-    /**
-     * Указатель ячейки для новой заявки.
-     */
-    private int position = 0;
+    ArrayList<Item> items = new ArrayList<>();
 
     /**
      * Генератор случайных чисел.
@@ -28,7 +24,8 @@ public class Tracker {
      */
     public Item add(Item item) {
         item.setId(this.generateId());
-        this.items[this.position++] = item;
+        //this.items[this.position++] = item;
+        this.items.add(item);
         return item;
     }
 
@@ -39,10 +36,10 @@ public class Tracker {
      */
     public void replace(String id, Item item) {
         if (id != null) {
-            for (int i = 0; i < position; i++) {
-                if (id.equals(this.items[i].getId())) {
+            for (int i = 0; i < items.size(); i++) {
+                if (id.equals(this.items.get(i).getId())) {
                     item.setId(id);
-                    this.items[i] = item;
+                    this.items.set(i, item);
                     break;
                 }
             }
@@ -55,10 +52,9 @@ public class Tracker {
      */
     public void delete(String id) {
         if (id != null) {
-            for (int i = 0; i < position; i++) {
-                if (id.equals(this.items[i].getId())) {
-                    System.arraycopy(this.items, i + 1, this.items, i, position - i - 1);
-                    this.items[--position] = null;
+            for (int i = 0; i < items.size(); i++) {
+                if (id.equals(this.items.get(i).getId())) {
+                    this.items.remove(i);
                     break;
                 }
             }
@@ -66,15 +62,12 @@ public class Tracker {
     }
 
     /**
-     * Метод возвращает копию массива this.items без null элементов.
-     * @return - массив items без null-элементов.
+     * Метод возвращает копию списка this.items.
+     * @return - список items.
      */
-    public Item[] findAll() {
-        Item[] result = null;
-        if (position > 0) {
-            result = new Item[position];
-            System.arraycopy(this.items, 0, result, 0, position);
-        }
+    public ArrayList<Item> findAll() {
+        ArrayList<Item> result = new ArrayList<>();
+        result.addAll(items);
         return result;
     }
 
@@ -85,19 +78,13 @@ public class Tracker {
      * Примечание: в метод может быть передан null - тогда вернется null.
      * Может быть так, что все 100 заявок в массиве items имеют искомое имя.
      */
-    public Item[] findByName(String key) {
-        Item[] result = null;
+    public ArrayList<Item> findByName(String key) {
+        ArrayList<Item> result = new ArrayList<>();
         if (key != null) {
-            Item[] temp = new Item[100];
-            int index = 0;
-            for (int i = 0; i < position; i++) {
-                if (key.equals(this.items[i].getName())) {
-                    temp[index++] = this.items[i];
+            for (int i = 0; i < items.size(); i++) {
+                if (key.equals(this.items.get(i).getName())) {
+                    result.add(this.items.get(i));
                 }
-            }
-            if (index > 0) {
-                result = new Item[index];
-                System.arraycopy(temp, 0, result, 0, index);
             }
         }
         return result;
@@ -111,9 +98,9 @@ public class Tracker {
     public Item findById(String id) {
         Item result = null;
         if (id != null) {
-            for (int i = 0; i < position; i++) {
-                if (id.equals(this.items[i].getId())) {
-                    result = this.items[i];
+            for (int i = 0; i < items.size(); i++) {
+                if (id.equals(this.items.get(i).getId())) {
+                    result = this.items.get(i);
                     break;
                 }
             }
@@ -133,10 +120,9 @@ public class Tracker {
     /**
      * Получает информацию по заявке:  ИмяЗаявки, ОписаниеЗаявки, id = ИдентификаторЗаявки.
      * @param item - заявка.
-     * @return - строка с ирнформацией по заявке.
+     * @return - строка с информацией по заявке.
      */
     public String getItemInfo(Item item) {
         return new StringBuilder().append(item.getName()).append(", ").append(item.getDesc()).append(", id = ").append(item.getId()).toString();
     }
-
 }
