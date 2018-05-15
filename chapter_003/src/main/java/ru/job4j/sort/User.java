@@ -3,7 +3,7 @@ package ru.job4j.sort;
 /**
  * Пользователь.
  */
-public class User implements Comparable<User>{
+public class User implements Comparable<User> {
     private String name;
     private int age;
 
@@ -21,7 +21,7 @@ public class User implements Comparable<User>{
     }
 
     /**
-     * Для сортировки пользователей - сортировка по Возврасту по возрастанию.
+     * Для сортировки пользователей - сортировка по Возрасту по возрастанию.
      * @param o - другой пользователь для сравнения с текущим.
      * @return - 0 если возрасты пользователей равны,
      *           +1 если возраст текущего пользователя больше,
