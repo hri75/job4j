@@ -26,7 +26,7 @@ public abstract class Figure {
      * Сходить фигурой.
      * Метод должен работать так.
      * dest - задает ячейку, куда следует пойти. Если фигура может туда пойти. то Вернуть массив ячеек. которые должна пройти фигура.
-     * Если фигура туда пойти не может. выбросить исключение ImposibleMoveException
+     * Если фигура туда пойти не может. выбросить исключение ImpossibleMoveException.
      * @param source - исходная ячейка.
      * @param dest - задает ячейку, куда следует пойти.
      * @return - возвращает массив ячеек, которые должна пройти фигура. Ячейка source в этот массив не включается,
@@ -41,4 +41,13 @@ public abstract class Figure {
      * @return - фигура.
      */
     public abstract Figure copy(Cell dest);
+
+    /**
+     * Метод проверяет, занимает ли фигура переданную ячейку.
+     * @param cell - ячейка на доске.
+     * @return - Истина = фигура занимает ячейку, Ложь = фигура не занимает ячейку.
+     */
+    public boolean isOccupied(Cell cell) {
+        return this.position.getX() == cell.getX() && this.position.getY() == cell.getY();
+    }
 }

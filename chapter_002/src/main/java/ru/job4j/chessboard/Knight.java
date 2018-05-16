@@ -3,14 +3,14 @@ package ru.job4j.chessboard;
 import java.util.Arrays;
 
 /**
- * класс, описывающий фигуру "Слон".
+ * класс, описывающий фигуру "Конь".
  */
-public class Bishop extends Figure {
+public class Knight extends Figure {
     /**
-     * Конструктор фигуры "Слон".
+     * Конструктор фигуры "Конь".
      * @param position - позиция фигуры (тип Cell).
      */
-    public Bishop(Cell position) {
+    public Knight(Cell position) {
         super(position);
     }
 
@@ -26,22 +26,24 @@ public class Bishop extends Figure {
      * так как фигура уже стоит в этой ячейке. Ячейка dest - включается.
      * @throws ImpossibleMoveException - исключение, выбрасываемое, если фигура не может пойти в ячейку dest.
      *
-     * Примечание: Слон ходит по-диагонали, поэтому следующая ячейка, куда делает ход слон, отличается от предыдущей
-     * на dx = +1 или dx = -1, и dy = +1 или dy = -1.
-     * переменные x,y = текущие координаты, через которые проходит слон.
-     * Если слон вышел за границы доски - значит надо выбросить исключение ImpossibleMoveException.
+     * Примечание: Конь ходит буквой Г.
+     * dx и dy при ходе конем не могут быть равны друг другу, должно быть например, dx = 1 и dy = 2
+     * переменные x,y = текущие координаты, через которые проходит фигура.
+     * Если фигура вышла за границы доски - значит надо выбросить исключение ImpossibleMoveException.
      * Диапазон допустимых значений x и y = от 1 до SIZE. (для обычной доски SIZE = 8).
      */
     @Override
     public Cell[] way(Cell source, Cell dest) throws ImpossibleMoveException {
-        String exceptionMessage = "Слон не может так ходить.";
+        String exceptionMessage = "Конь не может так ходить.";
         Cell[] temp = new Cell[SIZE - 1];
         int pos = 0;
         int x = source.getX();
         int y = source.getY();
-        int dx = Integer.compare(dest.getX(), source.getX());
-        int dy = Integer.compare(dest.getY(), source.getY());
-        if (dx == 0 || dy == 0) {
+        int dx = dest.getX() - source.getX();
+        int dy = dest.getY() - source.getY();
+        int absDx = Math.abs(dx);
+        int absYx = Math.abs(dy);
+        if (!(absDx != absYx && ((absDx == 1 && absYx == 2) || (absDx == 2 && absYx == 1)))) {
             throw new ImpossibleMoveException(exceptionMessage);
         }
         do {
@@ -56,7 +58,6 @@ public class Bishop extends Figure {
         return Arrays.copyOf(temp, pos);
     }
 
-
     /**
      * Метод создает новую фигуру с указанной координатой.
      * @param dest - координата фигуры.
@@ -64,6 +65,6 @@ public class Bishop extends Figure {
      */
     @Override
     public Figure copy(Cell dest) {
-        return new Bishop(dest);
+        return new Pawn(dest);
     }
 }

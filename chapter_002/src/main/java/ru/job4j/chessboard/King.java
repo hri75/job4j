@@ -3,14 +3,14 @@ package ru.job4j.chessboard;
 import java.util.Arrays;
 
 /**
- * класс, описывающий фигуру "Слон".
+ * класс, описывающий фигуру "Король".
  */
-public class Bishop extends Figure {
+public class King extends Figure {
     /**
-     * Конструктор фигуры "Слон".
+     * Конструктор фигуры "Король".
      * @param position - позиция фигуры (тип Cell).
      */
-    public Bishop(Cell position) {
+    public King(Cell position) {
         super(position);
     }
 
@@ -26,36 +26,34 @@ public class Bishop extends Figure {
      * так как фигура уже стоит в этой ячейке. Ячейка dest - включается.
      * @throws ImpossibleMoveException - исключение, выбрасываемое, если фигура не может пойти в ячейку dest.
      *
-     * Примечание: Слон ходит по-диагонали, поэтому следующая ячейка, куда делает ход слон, отличается от предыдущей
-     * на dx = +1 или dx = -1, и dy = +1 или dy = -1.
-     * переменные x,y = текущие координаты, через которые проходит слон.
-     * Если слон вышел за границы доски - значит надо выбросить исключение ImpossibleMoveException.
+     * Примечание: Король ходит на одну ячейку во все стороны.
+     * переменные x,y = текущие координаты, через которые проходит фигура.
+     * Если фигура вышла за границы доски - значит надо выбросить исключение ImpossibleMoveException.
      * Диапазон допустимых значений x и y = от 1 до SIZE. (для обычной доски SIZE = 8).
      */
     @Override
     public Cell[] way(Cell source, Cell dest) throws ImpossibleMoveException {
-        String exceptionMessage = "Слон не может так ходить.";
+        String exceptionMessage = "Король не может так ходить.";
         Cell[] temp = new Cell[SIZE - 1];
         int pos = 0;
         int x = source.getX();
         int y = source.getY();
         int dx = Integer.compare(dest.getX(), source.getX());
         int dy = Integer.compare(dest.getY(), source.getY());
-        if (dx == 0 || dy == 0) {
+        if (dx == 0 && dy == 0) {
             throw new ImpossibleMoveException(exceptionMessage);
         }
-        do {
-            x += dx;
-            y += dy;
-            if (x < 1 || x > SIZE || y < 1 || y > SIZE) {
-                throw new ImpossibleMoveException(exceptionMessage);
-            }
-            temp[pos++] = new Cell(x, y);
+        x += dx;
+        y += dy;
+        if (x < 1 || x > SIZE || y < 1 || y > SIZE) {
+            throw new ImpossibleMoveException(exceptionMessage);
         }
-        while (x != dest.getX() || y != dest.getY());
+        temp[pos++] = new Cell(x, y);
+        if (x != dest.getX() || y != dest.getY()) {
+            throw new ImpossibleMoveException(exceptionMessage);
+        }
         return Arrays.copyOf(temp, pos);
     }
-
 
     /**
      * Метод создает новую фигуру с указанной координатой.
@@ -64,6 +62,6 @@ public class Bishop extends Figure {
      */
     @Override
     public Figure copy(Cell dest) {
-        return new Bishop(dest);
+        return new Pawn(dest);
     }
 }

@@ -2,7 +2,7 @@ package ru.job4j.chessboard;
 
 /**
  * Исключение - наше собственноручно созданное.
- * Возникает, когда фигура не может пойти в заданную ячейку.
+ * Возникает, когда фигуры не оказалось в заданной ячейке.
  */
 public class FigureNotFoundException extends RuntimeException {
     public FigureNotFoundException(String msg) {

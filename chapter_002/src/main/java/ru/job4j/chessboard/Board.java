@@ -49,9 +49,10 @@ public class Board {
         }
         Cell[] cells = figures[index].way(source, dest);
         for (Cell cell: cells) {
-            int another = this.getIndexOfFigureFromCell(cell);
-            if (another >= 0) {
-                throw new OccupiedWayException("Путь занят.");
+            for (int i = 0; i < this.pos; i++) {
+                if (figures[i].isOccupied(cell)) {
+                    throw new OccupiedWayException("Путь занят.");
+                }
             }
         }
         figures[index] = figures[index].copy(dest);
@@ -68,7 +69,7 @@ public class Board {
     private int getIndexOfFigureFromCell(Cell cell) {
         int index = -1;
         for (int i = 0; i < this.pos; i++) {
-            if (figures[i] != null && figures[i].position.getX() == cell.getX() && figures[i].position.getY() == cell.getY()) {
+            if (figures[i].isOccupied(cell)) {
                 index = i;
                 break;
             }
