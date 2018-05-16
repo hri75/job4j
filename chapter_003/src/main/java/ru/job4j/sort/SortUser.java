@@ -12,9 +12,7 @@ public class SortUser {
      * @return - отсортированное множество.
      */
     public Set<User> sort(List<User> list) {
-        TreeSet<User> result = new TreeSet<>();
-        result.addAll(list);
-        return result;
+        return new TreeSet<>(list);
     }
 
     /**
