@@ -4,6 +4,9 @@ import java.util.Iterator;
 
 /**
  * Универсальная обертка над массивом.
+ *
+ * Добавлен метод indexOf.
+ *
  * @param <T>
  */
 public class SimpleArray<T> implements Iterable<T> {
@@ -82,5 +85,40 @@ public class SimpleArray<T> implements Iterable<T> {
                 return (T) array[pointer++];
             }
         };
+    }
+
+    /**
+     * Метод возвращает индекс первого вхождения переданного объекта в данный контейнер (если объект находится в контейнере),
+     * или -1 если объекта в контейнере нет.
+     *
+     * Returns the index of the first occurrence of the specified element in this list,
+     * or -1 if this list does not contain the element.
+     * More formally, returns the lowest index i such that (o==null ? get(i)==null : o.equals(get(i))),
+     * or -1 if there is no such index.
+     *
+     * Примечание: Почему разработчики языка Java позволяют себе нарушать принцип единственного return?
+     * Код взят из ArrayList из метода indexOf, но убран "множественный" return.
+     *
+     * @param obj - искомый объект.
+     * @return - индекс.
+     */
+    public int indexOf(Object obj) {
+        int result = -1;
+        if (obj == null) {
+            for (int i = 0; i < position; i++) {
+                if (this.array[i] == null) {
+                    result = i;
+                    break;
+                }
+            }
+        } else {
+            for (int i = 0; i < position; i++) {
+                if (obj.equals(this.array[i])) {
+                    result = i;
+                    break;
+                }
+            }
+        }
+        return result;
     }
 }
