@@ -1,6 +1,5 @@
 package ru.job4j.list;
 
-import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
@@ -40,11 +39,7 @@ public class DynamicArrayList<E> implements Iterable<E> {
 
     public void add(E value) {
         modCount++;
-        if (this.index >= this.container.length) {
-            Object[] temp = this.container;
-            this.container = new Object[this.index + DEFAULT_CAPACITY];
-            System.arraycopy(temp, 0, this.container, 0, this.index);
-        }
+        checkContainerSize();
         this.container[this.index++] = value;
     }
 
@@ -53,6 +48,64 @@ public class DynamicArrayList<E> implements Iterable<E> {
             throw new IndexOutOfBoundsException();
         }
         return (E) container[index];
+    }
+
+    /**
+     * Метод возвращает количество элементов в контейнере.
+     * @return - количество элементов в контейнере.
+     */
+    public int size() {
+        return this.index;
+    }
+
+    /**
+     * Метод добавляет элемент в контейнер по указанному индексу.
+     * @param index - индекс.
+     * @param value - добавляемое значение.
+     */
+    public void add(int index, E value) {
+        modCount++;
+        if (index < 0 || index > this.index) {
+            throw new IndexOutOfBoundsException();
+        }
+        checkContainerSize();
+        System.arraycopy(this.container, index, this.container, index + 1, this.index - index);
+        this.container[index] = value;
+        this.index++;
+    }
+
+    /**
+     * Метод удаляет из контейнера элемент по указанному индексу. Возвращает элемент, который был удален из контейнера.
+     * @param index - индекс, по которому удалить элемент.
+     * @return - элемент, который удален.
+     *
+     * Примечание: если индекс, по которому надо удалить элемент, указывает на последний элемент - тогда туда запишем null,
+     * тем самым освободим ссылку на элемент, чтобы GarbageCollector мог выполнить свою работу.
+     */
+    public E remove(int index) {
+        modCount++;
+        if (index < 0 || index >= this.index) {
+            throw new IndexOutOfBoundsException();
+        }
+        E result = (E) this.container[index];
+        if (index == this.index - 1) {
+            this.container[--this.index] = null;
+        } else {
+            System.arraycopy(this.container, index + 1, this.container, index, this.index - index - 1);
+            this.index--;
+        }
+        return result;
+    }
+
+    /**
+     * Метод проверяет размер контейнера, и если размер недостаточен, увеличивает размер контейнера на DEFAULT_CAPACITY.
+     */
+    private void checkContainerSize() {
+        if (this.index >= this.container.length) {
+            Object[] temp = this.container;
+            this.container = new Object[this.index + DEFAULT_CAPACITY];
+            System.arraycopy(temp, 0, this.container, 0, this.index);
+        }
     }
 
     @Override
