@@ -1,0 +1,47 @@
+
+Как вычисляется hash функция:
+---------------------------------
+Предыстория:
+Если посмотрим в класс Object на метод hashCode, то увидим:
+
+public native int hashCode();
+
+native означает, что данный метод реализован на другом языке, в данном случае на С++
+(функция get_next_hash, исходник = http://hg.openjdk.java.net/jdk8/jdk8/hotspot/file/tip/src/share/vm/runtime/synchronizer.cpp)
+
+В описании JavaDoc к методу hashCode написано:
+
+This is typically implemented by converting the internal
+     * address of the object into an integer, but this implementation
+     * technique is not required by the
+     * Java&trade; programming language.
+
+Перевод: Обычно это выполняется путем преобразования внутреннего адреса объекта в целое число,
+ но этот способ реализации не требуется языком программирования JavaTM.
+
+Если посмотрим в класс Object на метод hashCode, то увидим:
+
+   public boolean equals(Object obj) {
+        return (this == obj);
+    }
+
+Вывод: если мы переопределяем метод equals согласно какой-то своей бизнес-логике, то мы должны переопределить
+метод hashCode таким образом, чтобы если equals возвращает Истину для двух разных объектов, то hashCode должен
+возвращать одно и то же число для этих объектов, то есть должно выполняться равенство: o1.hashCode == o2.hashCode()
+
+Ответ:
+При использовании коллекций на основе хэш-таблиц сначала необходимо вычислить хэш-функцию от ключа.
+Для класса HashMap хэш-функция вычисляется так:
+
+    static final int hash(Object key) {
+        int h;
+        return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+    }
+
+затем, например, в методе putVal значение вычисленного хэша используется как индекс в массиве, где хранятся
+ссылки на корзины (на первый узел связанного списка):
+в операторе if ((p = tab[i = (n - 1) & hash]) == null)
+часть выражения i = (n - 1) & hash
+i обозначает индекс от 0 до n-1, где n - размер массива.
+
+
