@@ -1,16 +1,26 @@
 package ru.job4j.set;
 
+import java.util.HashMap;
+
 /**
  * Коллекция типа Set на базе хэш-таблицы.
  * @param <T> - тип хранимых в коллекции значений.
  */
 public class SimpleHashTableSet<T> {
 
+    /**
+     * Массив, который хранит значения множества.
+     */
     private Object[] objects;
 
     /**
+     * Количество свободных ячеек в массиве.
+     */
+    private int free;
+
+    /**
      * Начальный размер массива под хранение элементов.
-     * Необходимо, чтобы это было простое число.
+     * Необходимо, чтобы это было простое число, чтобы количество коллизий при вычислении хэш-индекса от значения было минимальным.
      */
     private static final int DEFAULT_CAPACITY = 3;
 
@@ -24,6 +34,7 @@ public class SimpleHashTableSet<T> {
      */
     public SimpleHashTableSet() {
         this.objects = new Object[DEFAULT_CAPACITY];
+        free = DEFAULT_CAPACITY;
         initObjects();
     }
 
@@ -38,6 +49,7 @@ public class SimpleHashTableSet<T> {
             checkSize();
             this.objects[hashFunction(value)] = value;
             isAdded = true;
+            free--;
         }
         return isAdded;
     }
@@ -48,14 +60,8 @@ public class SimpleHashTableSet<T> {
      * @return - Истина - значение содержится в контейнере.
      */
     public boolean contains(T value) {
-        boolean isContained = false;
-        for (int i = 0; i < this.objects.length; i++) {
-            if (value == null ? this.objects[i] == null : value.equals(this.objects[i])) {
-                isContained = true;
-                break;
-            }
-        }
-        return isContained;
+        int index = hashFunction(value);
+        return (value == null ? this.objects[index] == null : value.equals(this.objects[index]));
     }
 
     /**
@@ -65,12 +71,11 @@ public class SimpleHashTableSet<T> {
      */
     public boolean remove(T value) {
         boolean isRemoved = false;
-        for (int i = 0; i < this.objects.length; i++) {
-            if (value == null ? this.objects[i] == null : value.equals(this.objects[i])) {
-                this.objects[i] = NOT_FILLED;
-                isRemoved = true;
-                break;
-            }
+        int index = hashFunction(value);
+        if (value == null ? this.objects[index] == null : value.equals(this.objects[index])) {
+            this.objects[index] = NOT_FILLED;
+            isRemoved = true;
+            free++;
         }
         return isRemoved;
     }
@@ -83,28 +88,24 @@ public class SimpleHashTableSet<T> {
      * @return - хэш-число.
      */
     private int hashFunction(T value) {
-        return value.hashCode() % objects.length;
+        return (value == null ? 0 : value.hashCode() % objects.length);
     }
 
     /**
      * Метод проверяет, есть ли еще в хранилище незаполненные ячейки.
-     * Если незаполненных ячеек нет - увеличиваем массив.
+     * Если незаполненных ячеек нет - увеличиваем массив. Новая длина массива будет простым числом,
+     * чтобы количество коллизий было небольшим.
      */
     private void checkSize() {
-        boolean increaseArray = true;
-        for (int i = 0; i < this.objects.length; i++) {
-            if (this.objects[i] == NOT_FILLED) {
-                increaseArray = false;
-                break;
-            }
-        }
-        if (increaseArray) {
+        if (free <= 0) {
             Object[] temp = this.objects;
-            this.objects = new Object[this.getNextPrimeNumber(objects.length * 2)];
+            free = this.getNextPrimeNumber(objects.length * 2);
+            this.objects = new Object[free];
             initObjects();
             for (int i = 0; i < temp.length; i++) {
                 if (temp[i] != NOT_FILLED) {
                     this.objects[hashFunction((T) temp[i])] = temp[i];
+                    free--;
                 }
             }
         }

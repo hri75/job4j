@@ -20,7 +20,9 @@ public class SimpleHashTableSetTest {
         simpleHashTableSet.add(2);
         simpleHashTableSet.add(3);
         simpleHashTableSet.add(4);
-        assertThat(simpleHashTableSet.contains(4), is(true));
+        simpleHashTableSet.add(5);
+        simpleHashTableSet.add(null);
+        assertThat(simpleHashTableSet.contains(null), is(true));
     }
 
     @Test
@@ -29,10 +31,14 @@ public class SimpleHashTableSetTest {
         simpleHashTableSet.add(2);
         simpleHashTableSet.add(3);
         simpleHashTableSet.add(4);
+        simpleHashTableSet.add(null);
+        assertThat(simpleHashTableSet.contains(null), is(true));
         assertThat(simpleHashTableSet.remove(1), is(true));
         assertThat(simpleHashTableSet.remove(4), is(true));
         assertThat(simpleHashTableSet.remove(5), is(false));
+        assertThat(simpleHashTableSet.remove(null), is(true));
         assertThat(simpleHashTableSet.contains(1), is(false));
         assertThat(simpleHashTableSet.contains(4), is(false));
+        assertThat(simpleHashTableSet.contains(null), is(false));
     }
 }
