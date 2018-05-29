@@ -82,6 +82,7 @@ public class SimpleHashMap<K, V> implements Iterable<SimpleHashMap.Node<K, V>> {
         int index = getIndex(key);
         if (index >= 0) {
             table[index] = null;
+            free++;
         }
         return index >= 0;
     }
