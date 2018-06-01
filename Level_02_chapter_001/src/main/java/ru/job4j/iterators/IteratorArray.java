@@ -22,7 +22,7 @@ public class IteratorArray implements Iterator {
 
     @Override
     public boolean hasNext() {
-        return firstIndex < values.length && secondIndex < values[firstIndex].length;
+        return firstIndex < values.length;
     }
 
     @Override
